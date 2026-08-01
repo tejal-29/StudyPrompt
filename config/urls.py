@@ -36,4 +36,24 @@ urlpatterns = [
         "api/roadmap/",
         include("roadmap.urls"),
     ),
+    path(
+        "api/topics/",
+        include("topics.urls"),
+    ),
+    path(
+        "api/tasks/",
+        include("tasks.urls"),
+    ),
+    path(
+        "api/analytics/",
+        include("analytics_app.urls"),
+    ),
+    path(
+        "api/ai-coach/",
+        include("ai_coach.urls"),
+    ),
+    path(
+        "api/chatbot/",
+        include("chatbot.urls"),
+    ),
 ]

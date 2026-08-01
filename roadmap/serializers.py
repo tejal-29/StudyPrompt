@@ -1,10 +1,7 @@
 from rest_framework import serializers
 
-from .models import (
-    Roadmap,
-    RoadmapPhase,
-    Topic,
-)
+from .models import Roadmap, RoadmapPhase
+from topics.models import Topic
 
 
 class TopicSerializer(serializers.ModelSerializer):

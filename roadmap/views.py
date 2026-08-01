@@ -6,9 +6,11 @@ from rest_framework import status
 from goals.models import Goal
 from profiles.models import Profile
 
-from .models import Roadmap, RoadmapPhase, Topic
+from .models import Roadmap, RoadmapPhase
 from .serializers import RoadmapSerializer
 from .services import generate_roadmap
+from topics.models import Topic
+
 
 
 class GenerateRoadmapView(APIView):

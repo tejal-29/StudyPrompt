@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "ai_coach",
     "chatbot",
     "notifications",
+    "topics",
 ]
 
 MIDDLEWARE = [
