@@ -8,7 +8,20 @@ class ProfileSerializer(serializers.ModelSerializer):
 
         model = Profile
 
-        fields = "__all__"
+        fields = [
+            "id",
+            "full_name",
+            "college",
+            "branch",
+            "graduation_year",
+            "target_role",
+            "daily_study_hours",
+            "experience_level",
+            "bio",
+            "profile_image",
+            "created_at",
+            "updated_at",
+        ]
 
         read_only_fields = (
             "user",

@@ -1,18 +1,8 @@
 import json
 
-import google.generativeai as genai
-
-from decouple import config
-
+from utils.gemini import client
+import json
 from .prompts import ROADMAP_PROMPT
-
-
-genai.configure(
-    api_key=config("GEMINI_API_KEY")
-)
-
-model = genai.GenerativeModel("gemini-2.5-flash")
-
 
 def generate_roadmap(profile, goal):
 
@@ -23,6 +13,20 @@ def generate_roadmap(profile, goal):
         goal=goal.title,
     )
 
-    response = model.generate_content(prompt)
+    response = client.models.generate_content(
+        model="gemini-3.6-flash",
+        contents=prompt,
+    )
 
-    return json.loads(response.text)
+
+    text = response.text
+
+    text = text.replace(
+        "```json",
+        ""
+    ).replace(
+        "```",
+        ""
+    ).strip()
+
+    return json.loads(text)

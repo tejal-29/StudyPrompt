@@ -5,16 +5,25 @@ from .models import Profile
 from .serializers import ProfileSerializer
 
 
-class ProfileView(generics.RetrieveUpdateAPIView):
+class ProfileView(generics.RetrieveUpdateDestroyAPIView):
 
     serializer_class = ProfileSerializer
-
     permission_classes = [IsAuthenticated]
 
-    def get_object(self):
+    def get_queryset(self):
+        return Profile.objects.filter(user=self.request.user)
 
-        profile, created = Profile.objects.get_or_create(
+    def get_object(self):
+        return self.get_queryset().get()
+
+class CreateProfileView(generics.CreateAPIView):
+
+    serializer_class = ProfileSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+
+        serializer.save(
             user=self.request.user
         )
 
-        return profile

@@ -37,14 +37,22 @@ class Roadmap(models.Model):
 class RoadmapPhase(models.Model):
 
     roadmap = models.ForeignKey(
-        Roadmap, on_delete=models.CASCADE, related_name="phases"
+        Roadmap,
+        on_delete=models.CASCADE,
+        related_name="phases"
     )
 
     phase_name = models.CharField(max_length=255)
 
-    week_number = models.PositiveIntegerField()
+    start_week = models.PositiveIntegerField()
+
+    end_week = models.PositiveIntegerField()
 
     estimated_days = models.PositiveIntegerField()
+
+    phase_objective = models.TextField(blank=True)
+
+    milestone = models.TextField(blank=True)
 
     def __str__(self):
         return self.phase_name

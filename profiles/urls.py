@@ -1,6 +1,9 @@
 from django.urls import path
 
-from .views import ProfileView
+from .views import (
+    ProfileView,
+    CreateProfileView,
+)
 
 urlpatterns = [
 
@@ -10,4 +13,9 @@ urlpatterns = [
         name="profile",
     ),
 
+    path(
+        "create/",
+        CreateProfileView.as_view(),
+        name="create-profile",
+    ),
 ]

@@ -1,21 +1,15 @@
-import google.generativeai as genai
-
-from decouple import config
-
-genai.configure(
-    api_key=config("GEMINI_API_KEY")
-)
-
-model = genai.GenerativeModel(
-    "gemini-2.5-flash"
-)
-
+from utils.gemini import client
+from google.genai import types
 
 class ChatbotService:
 
     @staticmethod
     def ask(prompt):
 
-        response = model.generate_content(prompt)
+        response = client.models.generate_content(
+            model="gemini-3.6-flash",
+            contents=prompt,
+            config=types.GenerateContentConfig(response_mime_type="text/plain"),
+        )
 
         return response.text

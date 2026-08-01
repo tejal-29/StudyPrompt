@@ -1,16 +1,9 @@
-import google.generativeai as genai
-
+from google import genai
 from decouple import config
-
+from google.genai import types
 from .prompts import AI_COACH_PROMPT
 
-genai.configure(
-    api_key=config("GEMINI_API_KEY")
-)
-
-model = genai.GenerativeModel(
-    "gemini-2.5-flash"
-)
+client = genai.Client(api_key=config("GEMINI_API_KEY"))
 
 
 class AICoachService:
@@ -19,26 +12,20 @@ class AICoachService:
     def ask(profile, goal, analytics, question):
 
         prompt = AI_COACH_PROMPT.format(
-
             role=profile.target_role,
-
             experience=profile.experience_level,
-
             study_hours=profile.daily_study_hours,
-
             goal=goal.title,
-
             progress=analytics["progress"],
-
             completed=analytics["completed_tasks"],
-
-            remaining=analytics["total_tasks"] -
-                      analytics["completed_tasks"],
-
+            remaining=analytics["total_tasks"] - analytics["completed_tasks"],
             question=question,
-
         )
 
-        response = model.generate_content(prompt)
+        response = client.models.generate_content(
+            model="gemini-3.6-flash",
+            contents=prompt,
+            config=types.GenerateContentConfig(response_mime_type="text/plain"),
+        )
 
         return response.text
