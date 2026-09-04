@@ -1,29 +1,109 @@
-from rest_framework import generics
+from rest_framework.views import APIView
+from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from rest_framework import status
 
 from .models import Profile
 from .serializers import ProfileSerializer
 
 
-class ProfileView(generics.RetrieveUpdateDestroyAPIView):
-
-    serializer_class = ProfileSerializer
+class ProfileView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def get_queryset(self):
-        return Profile.objects.filter(user=self.request.user)
+    def get(self, request):
+        try:
+            profile = Profile.objects.get(user=request.user)
 
-    def get_object(self):
-        return self.get_queryset().get()
+            serializer = ProfileSerializer(profile)
 
-class CreateProfileView(generics.CreateAPIView):
+            return Response(
+                {
+                    "exists": True,
+                    "profile": serializer.data,
+                },
+                status=status.HTTP_200_OK,
+            )
 
-    serializer_class = ProfileSerializer
-    permission_classes = [IsAuthenticated]
+        except Profile.DoesNotExist:
+            return Response(
+                {
+                    "exists": False,
+                    "profile": None,
+                    "message": "Profile not created yet.",
+                },
+                status=status.HTTP_200_OK,
+            )
 
-    def perform_create(self, serializer):
+    def post(self, request):
+        try:
+            # Prevent duplicate profiles
+            if Profile.objects.filter(user=request.user).exists():
+                return Response(
+                    {
+                        "error": "Profile already exists."
+                    },
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
 
-        serializer.save(
-            user=self.request.user
+            serializer = ProfileSerializer(data=request.data)
+
+            if serializer.is_valid():
+                profile = serializer.save(user=request.user)
+
+                return Response(
+                    {
+                        "message": "Profile created successfully.",
+                        "profile": ProfileSerializer(profile).data,
+                    },
+                    status=status.HTTP_201_CREATED,
+                )
+
+            return Response(
+                serializer.errors,
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        except Exception as e:
+            print("PROFILE CREATE ERROR:", str(e))
+
+            return Response(
+                {
+                    "error": "Failed to create profile.",
+                    "details": str(e),
+                },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
+
+    def put(self, request):
+        try:
+            profile = Profile.objects.get(user=request.user)
+
+        except Profile.DoesNotExist:
+            return Response(
+                {
+                    "error": "Profile not found."
+                },
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        serializer = ProfileSerializer(
+            profile,
+            data=request.data,
+            partial=True,
         )
 
+        if serializer.is_valid():
+            profile = serializer.save()
+
+            return Response(
+                {
+                    "message": "Profile updated successfully.",
+                    "profile": ProfileSerializer(profile).data,
+                },
+                status=status.HTTP_200_OK,
+            )
+
+        return Response(
+            serializer.errors,
+            status=status.HTTP_400_BAD_REQUEST,
+        )

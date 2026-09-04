@@ -1,14 +1,10 @@
 from django.db import models
-
-# Create your models here.
-from django.db import models
 from django.conf import settings
 
 
 class Profile(models.Model):
 
     EXPERIENCE_LEVEL = [
-
         ("Beginner", "Beginner"),
         ("Intermediate", "Intermediate"),
         ("Advanced", "Advanced"),
@@ -17,7 +13,7 @@ class Profile(models.Model):
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name="profile"
+        related_name="profile",
     )
 
     full_name = models.CharField(max_length=200)
@@ -30,12 +26,12 @@ class Profile(models.Model):
 
     target_role = models.CharField(max_length=150)
 
-    daily_study_hours = models.PositiveIntegerField()
+    daily_study_hours = models.PositiveIntegerField(default=2)
 
     experience_level = models.CharField(
         max_length=20,
         choices=EXPERIENCE_LEVEL,
-        default="Beginner"
+        default="Beginner",
     )
 
     bio = models.TextField(blank=True)
@@ -43,7 +39,7 @@ class Profile(models.Model):
     profile_image = models.ImageField(
         upload_to="profiles/",
         blank=True,
-        null=True
+        null=True,
     )
 
     created_at = models.DateTimeField(auto_now_add=True)

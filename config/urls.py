@@ -56,4 +56,8 @@ urlpatterns = [
         "api/chatbot/",
         include("chatbot.urls"),
     ),
+    path(
+        "api/dashboard/",
+        include("dashboard.urls"),
+    ),
 ]
