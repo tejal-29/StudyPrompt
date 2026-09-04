@@ -1,6 +1,6 @@
-# Smart Study – An AI-Powered Personalized Study Planner
+# StudyPrompt – An AI-Powered Personalized Study Planner
 
-Smart Study is an AI-powered personalized learning platform designed to help students plan, organize, and optimize their learning journey. It enables users to create customized study plans, manage daily tasks, track progress, and receive intelligent assistance through an AI chatbot.
+StudyPrompt is an AI-powered personalized learning platform designed to help students plan, organize, and optimize their learning journey. It enables users to create customized study plans, manage daily tasks, track progress, and receive intelligent assistance through an AI chatbot.
 
 Whether you're preparing for competitive exams, college studies, or learning new skills, Smart Study provides a structured and personalized approach to achieve your learning goals.
 
