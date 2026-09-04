@@ -270,7 +270,7 @@ chatbot
 ## 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/StudyPrompt.git
+git clone https://github.com/tejal-29/StudyPrompt.git
 cd StudyPrompt
 ```
 
